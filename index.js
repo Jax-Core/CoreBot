@@ -13,7 +13,7 @@ client.on('interactionCreate', async (interaction) => {
 
 	const { commandName } = interaction
 
-	if (commandName === 'skin') {
+	if (commandName === 'module') {
 		const string = interaction.options.getString('skins')
 		const req = `https://api.github.com/repos/Jax-Core/${string}`
 		await fetch(req)
@@ -76,6 +76,25 @@ client.on('interactionCreate', async (interaction) => {
 				})
 		}
 	}
-})
+	if (commandName === 'deviantart') {
+		const skin = interaction.options.getString('skins')
+		const req = `https://www.deviantart.com/jaxoriginals/art/${skin}`
+		await fetch(req)
+			.then(function(response) {
+				if (response.status !== 200) {
+					interaction.reply(
+						`${skin}'s deviantart doesn't exist. \nIf you think this is a mistake, please contact the CoreStaff.`,
+					)
+				}
+				else {
+					interaction.reply(req)
+				}
+			})
+			.catch(function(error) {
+				interaction.reply(error)
+			})
+	}
+},
+)
 
 client.login(token)

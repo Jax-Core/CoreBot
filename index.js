@@ -6,7 +6,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
 
 client.once('ready', () => {
 	console.log('Ready!')
-	client.user.setActivity('hmm')
+	client.user.setActivity('Math')
 })
 
 client.on('interactionCreate', async (interaction) => {

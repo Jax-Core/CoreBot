@@ -1,13 +1,41 @@
 const { Client, Intents } = require('discord.js')
-const fetch = require('node-fetch')
-const { token } = require('./config.json')
+const { token, gh_token } = require('./config.json')
+const fetch = require('cross-fetch')
+const { ApolloClient, InMemoryCache, gql, HttpLink } = require('@apollo/client/core')
+
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
+
+const apollo = new ApolloClient({
+	link: new HttpLink({ uri: 'https://api.github.com/graphql', fetch, headers: { Authorization: `bearer ${gh_token}` } }),
+	cache: new InMemoryCache(),
+})
 
 client.once('ready', () => {
 	console.log('Ready!')
 	client.user.setActivity('Math')
+	apollo.query({
+		query: gql`
+		query {
+			repository(owner: "Jax-Core", name: "JaxCore") {
+				releases(last: 1) {
+					nodes {
+						tagName
+						}
+					}
+				}
+			}
+		`,
+	})
+		.then(result => {
+			const v = result.data.repository.releases.nodes[0].tagName.substring(1)
+			client.channels.cache.get('894595340622254171').setName('version ' + v)
+		})
+		.catch(error => {
+			console.log(error)
+		})
 })
+
 
 client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isCommand()) return

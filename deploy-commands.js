@@ -22,7 +22,7 @@ const commands = [
 				.addChoice('Plainext', 'Plainext')
 				.addChoice('QuickNote', 'QuickNote')
 				.addChoice('ValliStart', 'ValliStart')
-				.addChoice('YourFlyouts', 'YourFlyouts')),
+				.addChoice('YourMixer', 'YourMixer')),
 	new SlashCommandBuilder()
 		.setName('release')
 		.setDescription('Sends a link to a release that you wish.')
@@ -41,7 +41,7 @@ const commands = [
 				.addChoice('Plainext', 'Plainext')
 				.addChoice('QuickNote', 'QuickNote')
 				.addChoice('ValliStart', 'ValliStart')
-				.addChoice('YourFlyouts', 'YourFlyouts'))
+				.addChoice('YourMixer', 'YourMixer'))
 		.addStringOption((option) =>
 			option
 				.setName('version')
@@ -63,7 +63,16 @@ const commands = [
 				.addChoice('ModularVisualizer', 'ModularVisualizer.L=903806619')
 				.addChoice('Plainext', 'Plainext.L=881628513')
 				.addChoice('QuickNote', 'QuickNote.L=894951390')
-				.addChoice('ValliStart', 'ValliStart.L=893506095')),
+				.addChoice('ValliStart', 'ValliStart.L=893506095')
+				.addChoice('YourMixer', 'YourMixer.L=905969076')),
+	new SlashCommandBuilder()
+		.setName('rpc')
+		.setDescription('Changes the bot\'s status.')
+		.addStringOption((option) =>
+			option
+				.setName('status')
+				.setDescription('Enter the status you wish.')
+				.setRequired(true)),
 ].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(token)

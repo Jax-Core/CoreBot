@@ -2,6 +2,7 @@ const { Client, Intents } = require('discord.js')
 const { token, gh_token } = require('./config.json')
 const fetch = require('cross-fetch')
 const { ApolloClient, InMemoryCache, gql, HttpLink } = require('@apollo/client/core')
+const cron = require('node-cron')
 
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
@@ -14,6 +15,9 @@ const apollo = new ApolloClient({
 client.once('ready', () => {
 	console.log('Ready!')
 	client.user.setActivity('Math')
+})
+
+cron.schedule('0 * * * *', () => {
 	apollo.query({
 		query: gql`
 		query {
@@ -122,6 +126,16 @@ client.on('interactionCreate', async (interaction) => {
 			.catch(function(error) {
 				interaction.reply(error)
 			})
+	}
+	if (commandName === 'rpc') {
+		if (interaction.member.roles.cache.has('880455024348631081') || interaction.member.roles.cache.has('880450642588602479')) {
+			const status = interaction.options.getString('status')
+			client.user.setActivity(status)
+			interaction.reply('Status set to ' + status)
+		}
+		else {
+			interaction.reply('You don\'t have permission to perform this action.')
+		}
 	}
 },
 )

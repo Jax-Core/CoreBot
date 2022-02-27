@@ -3,7 +3,7 @@ const { token, gh_token } = require('./config.json')
 const fetch = require('cross-fetch')
 const { ApolloClient, InMemoryCache, gql, HttpLink } = require('@apollo/client/core')
 const cron = require('node-cron')
-
+const Keyv = require('keyv')
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
 
@@ -12,9 +12,11 @@ const apollo = new ApolloClient({
 	cache: new InMemoryCache(),
 })
 
-client.once('ready', () => {
+const keyv = new Keyv('sqlite://./core.sqlite')
+
+client.once('ready', async () => {
 	console.log('Ready!')
-	client.user.setActivity('Math')
+	client.user.setActivity(await keyv.get('activity'))
 })
 
 cron.schedule('0 * * * *', () => {
@@ -130,6 +132,7 @@ client.on('interactionCreate', async (interaction) => {
 	if (commandName === 'rpc') {
 		if (interaction.member.roles.cache.has('880455024348631081') || interaction.member.roles.cache.has('880450642588602479')) {
 			const status = interaction.options.getString('status')
+			await keyv.set('activity', status)
 			client.user.setActivity(status)
 			interaction.reply('Status set to ' + status)
 		}

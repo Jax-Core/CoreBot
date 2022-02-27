@@ -72,7 +72,7 @@ const commands = [
 			option
 				.setName('status')
 				.setDescription('Enter the status you wish.')
-				.setRequired(true)),
+				.setRequired(false)),
 ].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(token)

@@ -177,7 +177,7 @@ client.on('interactionCreate', async (interaction) => {
 			.setDescription(suggestion)
 			.setFooter({ text: 'Suggestion-ID: ' + suggestion_id });
 		// send embed and message
-		client.channels.cache.get('962092418709217321').send({ embeds: [embed] })
+		client.channels.cache.get('880983365581426708').send({ embeds: [embed] })
 			.then(async function(message) {
 				message.react('✅')
 				message.react('❌')

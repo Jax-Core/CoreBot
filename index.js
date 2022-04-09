@@ -1,29 +1,16 @@
 const { Client, Intents, MessageEmbed } = require('discord.js')
-const { token, gh_token } = require('./config.json')
-const fetch = require('cross-fetch')
-const { ApolloClient, InMemoryCache, gql, HttpLink } = require('@apollo/client/core')
-const cron = require('node-cron')
-const Keyv = require('keyv')
-
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
+const { token } = require('./config.json')
 
-const apollo = new ApolloClient({
-	link: new HttpLink({ uri: 'https://api.github.com/graphql', fetch, headers: { Authorization: `bearer ${gh_token}` } }),
-	cache: new InMemoryCache(),
-})
-
+const Keyv = require('keyv')
 const keyv = new Keyv('sqlite://./core.sqlite')
 
-function makeid(length) {
-	let result = '';
-	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	const charactersLength = characters.length;
-	for (let i = 0; i < length; i++) {
-		result += characters.charAt(Math.floor(Math.random() *
-charactersLength));
-	}
-	return result;
-}
+const cron = require('node-cron')
+const fetch = require('cross-fetch')
+
+const { getLatest } = require('./functions/getLatest')
+const { makeid } = require('./functions/makeId')
+
 
 function isStaff(member) {
 	return member.roles.cache.has('880455024348631081') || member.roles.cache.has('880450642588602479')
@@ -32,37 +19,19 @@ function isStaff(member) {
 client.once('ready', async () => {
 	console.log('Ready!')
 	client.user.setActivity(await keyv.get('activity'))
+	const v = await getLatest()
+	await client.channels.cache.get('894595340622254171').setName('version v' + v)
 })
 
-cron.schedule('0 * * * *', () => {
-	apollo.query({
-		query: gql`
-		query {
-			repository(owner: "Jax-Core", name: "JaxCore") {
-				releases(last: 1) {
-					nodes {
-						tagName
-						}
-					}
-				}
-			}
-		`,
-	})
-		.then(result => {
-			const v = result.data.repository.releases.nodes[0].tagName.substring(1)
-			client.channels.cache.get('894595340622254171').setName('version ' + v)
-		})
-		.catch(error => {
-			console.log(error)
-		})
+cron.schedule('0 * * * *', async () => {
+	const v = await getLatest()
+	await client.channels.cache.get('894595340622254171').setName('version v' + v)
 })
 
 
 client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isCommand()) return
 	const { commandName } = interaction
-
-	console.log(interaction.user.username + '#' + interaction.user.discriminator + ' used ' + commandName)
 
 	if (commandName === 'module') {
 		const string = interaction.options.getString('skins')

@@ -73,6 +73,14 @@ const commands = [
 				.setName('status')
 				.setDescription('Enter the status you wish.')
 				.setRequired(false)),
+	new SlashCommandBuilder()
+		.setName('suggest')
+		.setDescription('Make a suggestion.')
+		.addStringOption((option) =>
+			option
+				.setName('suggestion')
+				.setDescription('Enter the suggestion you wish.')
+				.setRequired(true)),
 ].map((command) => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(token)

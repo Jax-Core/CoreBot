@@ -6,7 +6,7 @@ const { token } = require('../config.json')
 
 
 const Keyv = require('keyv')
-const keyv = new Keyv('sqlite://../core.sqlite')
+const keyv = new Keyv('sqlite://./core.sqlite')
 
 function isStaff(member) {
 	return member.roles.cache.has('880455024348631081') || member.roles.cache.has('880450642588602479')

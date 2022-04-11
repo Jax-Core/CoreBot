@@ -5,7 +5,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
 const { token } = require('../config.json')
 
 const Keyv = require('keyv')
-const keyv = new Keyv('sqlite://../core.sqlite')
+const keyv = new Keyv('sqlite://./core.sqlite')
 
 const { makeid } = require('../functions/makeId')
 

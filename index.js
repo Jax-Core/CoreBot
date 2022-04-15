@@ -1,13 +1,13 @@
 const { Client, Intents, Collection } = require('discord.js')
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
-const { token } = require('./config.json')
+const { token, db_connection } = require('./config.json')
 
 const fs = require('fs')
 client.commands = new Collection()
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 const Keyv = require('keyv')
-const keyv = new Keyv('sqlite://./core.sqlite')
+const keyv = new Keyv(db_connection)
 
 const { getLatest } = require('./functions/getLatest')
 

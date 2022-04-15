@@ -2,10 +2,10 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const { Client, Intents, MessageEmbed } = require('discord.js')
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
-const { token } = require('../config.json')
+const { token, db_connection } = require('../config.json')
 
 const Keyv = require('keyv')
-const keyv = new Keyv('sqlite://./core.sqlite')
+const keyv = new Keyv(db_connection)
 
 const { makeid } = require('../functions/makeId')
 

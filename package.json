@@ -15,7 +15,7 @@
     "@apollo/client": "^3.5.9",
     "@discordjs/builders": "^0.11.0",
     "@discordjs/rest": "^0.2.0-canary.0",
-    "@keyv/sqlite": "^3.0.0",
+    "@keyv/redis": "^2.3.3",
     "cross-fetch": "^3.1.5",
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.5.0",

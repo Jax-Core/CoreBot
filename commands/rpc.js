@@ -2,11 +2,11 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const { Client, Intents } = require('discord.js')
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
-const { token } = require('../config.json')
+const { token, db_connection } = require('../config.json')
 
 
 const Keyv = require('keyv')
-const keyv = new Keyv('sqlite://./core.sqlite')
+const keyv = new Keyv(db_connection)
 
 function isStaff(member) {
 	return member.roles.cache.has('880455024348631081') || member.roles.cache.has('880450642588602479')
@@ -29,7 +29,6 @@ module.exports = {
 		if (isStaff(interaction.member)) {
 			const status = interaction.options.getString('status')
 			await keyv.set('activity', status)
-			console.log('Set activity to ' + status)
 			client.user.setActivity(status)
 			interaction.reply('Status set to ' + status + ' by ' + interaction.member.displayName + '.')
 			await keyv.set('activity_user', interaction.member.displayName)

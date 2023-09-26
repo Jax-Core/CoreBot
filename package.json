@@ -20,7 +20,7 @@
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.5.0",
     "dotenv": "^10.0.0",
-    "graphql": "^16.3.0",
+    "graphql": "^16.8.1",
     "keyv": "^4.1.1",
     "node-cron": "^3.0.0"
   },
